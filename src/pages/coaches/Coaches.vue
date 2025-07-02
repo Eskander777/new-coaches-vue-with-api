@@ -4,19 +4,13 @@
     <base-card>
       <div class="controls">
         <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
-        <base-button v-if="!isCoach" link to="/register"
+        <base-button v-if="!isCoach && isFetching === false" link to="/register"
           >Register a Coach</base-button
         >
       </div>
-      <p v-if="isFetching">Coaches Fetching ...</p>
+      <p v-if="isFetching"><base-spinner></base-spinner></p>
       <p v-else-if="isErrorFetching">Fetching Error</p>
-      <ul
-        v-else-if="
-          hasCoaches === true &&
-          isFetching === false &&
-          isErrorFetching === false
-        "
-      >
+      <ul v-else-if="hasCoaches === true">
         <coach-item
           v-for="coach in filteredCoaches"
           :key="coach.id"
@@ -27,15 +21,7 @@
           :id="coach.id"
         ></coach-item>
       </ul>
-      <h3
-        v-else-if="
-          hasCoaches === false &&
-          isFetching === false &&
-          isErrorFetching === false
-        "
-      >
-        No coaches found.
-      </h3>
+      <h3 v-else>No coaches found.</h3>
     </base-card>
   </section>
 </template>
@@ -55,6 +41,9 @@ export default {
     },
     hasCoaches() {
       return this.$store.getters['coaches/hasCoaches'];
+    },
+    noCoaches() {
+      return this.$store.getters['coaches/noCoaches'];
     },
     isFetching() {
       return this.$store.getters['coaches/isFetching'];

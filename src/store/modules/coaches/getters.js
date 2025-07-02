@@ -2,8 +2,11 @@ export const getters = {
   coaches(state) {
     return state.coaches;
   },
-  hasCoaches(state) {
-    return state.coaches && state.coaches.length > 0;
+  loadingDone(_, getters) {
+    return getters.isFetching === false && getters.isErrorFetching === false;
+  },
+  hasCoaches(state, getters) {
+    return getters.loadingDone && state.coaches.length > 0;
   },
   // To use payload with getters with vuex store we should
   // return a function, that receive selected payload. And
