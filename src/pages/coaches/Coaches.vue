@@ -1,4 +1,11 @@
 <template>
+  <base-dialog
+    :show="isErrorFetching"
+    title="An error occured!"
+    @close="closeDialog"
+  >
+    <p>{{ errorMsg }}</p>
+  </base-dialog>
   <section><coach-filter></coach-filter></section>
   <section>
     <base-card>
@@ -9,7 +16,6 @@
         >
       </div>
       <p v-if="isFetching"><base-spinner></base-spinner></p>
-      <p v-else-if="isErrorFetching">Fetching Error</p>
       <ul v-else-if="hasCoaches === true">
         <coach-item
           v-for="coach in filteredCoaches"
@@ -49,12 +55,18 @@ export default {
       return this.$store.getters['coaches/isFetching'];
     },
     isErrorFetching() {
+      return !!this.$store.getters['coaches/isErrorFetching'];
+    },
+    errorMsg() {
       return this.$store.getters['coaches/isErrorFetching'];
     },
   },
   methods: {
     loadCoaches() {
       this.$store.dispatch('coaches/getCoaches');
+    },
+    closeDialog() {
+      this.$store.commit('coaches/setError', false);
     },
   },
   created() {

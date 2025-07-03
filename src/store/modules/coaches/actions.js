@@ -21,7 +21,8 @@ export const actions = {
       body: JSON.stringify(newCoach),
     }).then((response) => {
       if (!response.ok) {
-        // error ...
+        const error = new Error(response.message || '');
+        throw error;
       }
 
       context.commit('addCoach', {
@@ -40,12 +41,13 @@ export const actions = {
     })
       .then((resp) => {
         if (!resp.ok) {
-          context.commit('setError', true);
+          const error = new Error(response.message || '');
+          throw error;
         }
         return resp.json();
       })
       .then((coachesData) => {
-        if (Object.keys(coachesData).length === 0) {
+        if (!coachesData || Object.keys(coachesData).length === 0) {
           return;
         }
         const coachesArr = [];
@@ -55,7 +57,7 @@ export const actions = {
         }
         context.commit('setCoaches', coachesArr);
       })
-      .catch(() => context.commit('setError', true))
+      .catch((error) => context.commit('setError', error))
       .finally(() => {
         context.commit('setFetching', false);
       });
