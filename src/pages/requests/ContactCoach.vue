@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="submitForm">
+  <form v-if="isSending === false" @submit.prevent="submitForm">
     <div class="form-control">
       <label for="email">Your Email</label>
       <input type="email" id="email" v-model.trim="email" />
@@ -15,6 +15,7 @@
       <base-button>Send Message</base-button>
     </div>
   </form>
+  <p v-else>Is sending ...</p>
 </template>
 
 <script>
@@ -24,6 +25,7 @@ export default {
       email: '',
       message: '',
       formIsValid: true,
+      isSending: false,
     };
   },
   methods: {
@@ -37,12 +39,17 @@ export default {
         this.formIsValid = false;
         return;
       }
-      this.$store.dispatch('requests/contactCoach', {
-        email: this.email,
-        message: this.message,
-        coachId: this.$route.params.id,
-      });
-      this.$router.replace('/coaches');
+      this.isSending = true;
+      this.$store
+        .dispatch('requests/contactCoach', {
+          email: this.email,
+          message: this.message,
+          coachId: this.$route.params.id,
+        })
+        .then(() => {
+          this.isSending = false;
+          this.$router.replace('/coaches');
+        });
     },
   },
 };
