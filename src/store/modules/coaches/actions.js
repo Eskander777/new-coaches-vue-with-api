@@ -32,7 +32,14 @@ export const actions = {
     });
   },
 
-  getCoaches(context) {
+  getCoaches(context, payload) {
+    if (
+      payload.customRefresh === false &&
+      context.getters.shouldUpdate === false
+    ) {
+      return;
+    }
+
     context.commit('setFetching', true);
     context.commit('setError', false);
     fetch(coachesApi(), {
@@ -56,6 +63,7 @@ export const actions = {
           coachesArr.push(coachObj);
         }
         context.commit('setCoaches', coachesArr);
+        context.commit('setFetchTimestamp');
       })
       .catch((error) => context.commit('setError', error))
       .finally(() => {

@@ -37,5 +37,12 @@ export const getters = {
   isErrorFetching(state) {
     return state.errorFetching;
   },
+  shouldUpdate(state) {
+    const lastFetch = state.lastFetch;
+    if (lastFetch === null) {
+      return true;
+    }
+    return new Date().getTime() - lastFetch > 60_000;
+  },
 };
 

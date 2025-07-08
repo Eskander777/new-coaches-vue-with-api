@@ -1,12 +1,10 @@
 export const mutations = {
   toggleArea(state, area) {
     const sAreaIndex = state.selectedAreas.findIndex((sArea) => sArea === area);
-
     if (sAreaIndex === -1) {
       state.selectedAreas.push(area);
       return;
     }
-
     state.selectedAreas.splice(sAreaIndex, 1);
   },
   addCoach(state, newCoach) {
@@ -20,6 +18,9 @@ export const mutations = {
   },
   setFetching(state, fetchingState) {
     state.coachesFetching = fetchingState;
+  },
+  setFetchTimestamp(state) {
+    state.lastFetch = new Date().getTime();
   },
 };
 

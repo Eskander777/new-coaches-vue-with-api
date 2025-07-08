@@ -1,21 +1,27 @@
 <template>
   <teleport to="body">
     <div v-if="show" @click="tryClose" class="backdrop"></div>
-    <dialog open v-if="show">
-      <header>
-        <slot name="header">
-          <h2>{{ title }}</h2>
-        </slot>
-      </header>
-      <section>
-        <slot></slot>
-      </section>
-      <menu v-if="!fixed">
-        <slot name="actions">
-          <base-button @click="tryClose">Close</base-button>
-        </slot>
-      </menu>
-    </dialog>
+    <!-- For adding transitions we shouldn't forget to use -->
+    <!-- 'active' styles(by default 'v-enter-active' and  -->
+    <!-- 'v-leave-active') where we add 'transitions' properties. -->
+    <!-- Otherwise transitions won't work.  -->
+    <transition>
+      <dialog open v-if="show">
+        <header>
+          <slot name="header">
+            <h2>{{ title }}</h2>
+          </slot>
+        </header>
+        <section>
+          <slot></slot>
+        </section>
+        <menu v-if="!fixed">
+          <slot name="actions">
+            <base-button @click="tryClose">Close</base-button>
+          </slot>
+        </menu>
+      </dialog>
+    </transition>
   </teleport>
 </template>
 
@@ -96,6 +102,26 @@ menu {
   margin: 0;
 }
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.v-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.v-leave-active {
+  transition: all 0.3s ease-in;
+}
+
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
 @media (min-width: 768px) {
   dialog {
     left: calc(50% - 20rem);
@@ -103,3 +129,4 @@ menu {
   }
 }
 </style>
+
