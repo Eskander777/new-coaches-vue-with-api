@@ -42,7 +42,8 @@ export const actions = {
 
     context.commit('setFetching', true);
     context.commit('setError', false);
-    fetch(coachesApi(), {
+
+    return fetch(coachesApi(), {
       method: 'GET',
       headers: { 'Content-type': 'application/json' },
     })

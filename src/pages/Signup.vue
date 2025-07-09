@@ -1,0 +1,58 @@
+<template>
+  <div>
+    <base-card>
+      <h2>Signup Page</h2>
+    </base-card>
+    <base-card>
+      <form>
+        <div class="form-control">
+          <label for="email">Email</label
+          ><input type="email" name="email" id="email" />
+        </div>
+        <div class="form-control">
+          <label for="password">Password</label
+          ><input type="password" name="password" id="password" />
+        </div>
+        <base-button>Login</base-button>
+        <base-button type="button" mode="flat">Signup instead</base-button>
+      </form>
+    </base-card>
+  </div>
+</template>
+
+<style scoped>
+form {
+  margin: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.form-control {
+  margin: 0.5rem 0;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  font: inherit;
+  border: 1px solid #ccc;
+  padding: 0.15rem;
+  resize: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #3d008d;
+  background-color: #faf6ff;
+  outline: none;
+}
+</style>
+

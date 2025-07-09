@@ -6,11 +6,13 @@ import RegisterCoach from '@/pages/coaches/RegisterCoach.vue';
 import ContactCoach from '@/pages/requests/ContactCoach.vue';
 import Requests from '@/pages/requests/Requests.vue';
 import Error from '@/pages/Error.vue';
+import Signup from '@/pages/Signup.vue';
 
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', redirect: '/coaches' },
+    { path: '/signup', component: Signup },
     { path: '/coaches', component: Coaches },
     {
       props: true,

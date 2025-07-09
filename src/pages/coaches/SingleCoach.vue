@@ -39,22 +39,42 @@ export default {
   },
   created() {
     this.selectedCoach = this.$store.getters['coaches/singleCoach'](this.id);
+
+    if (this.selectedCoach === undefined) {
+      this.$store
+        .dispatch('coaches/getCoaches', { customRefresh: false })
+        .then(() => {
+          this.selectedCoach = this.$store.getters['coaches/singleCoach'](
+            this.id
+          );
+        });
+    }
   },
   computed: {
     fullName() {
-      return `${this.selectedCoach.firstName} ${this.selectedCoach.lastName}`;
+      if (this.selectedCoach) {
+        return `${this.selectedCoach.firstName} ${this.selectedCoach.lastName}`;
+      }
     },
     contactCoachUrl() {
-      return `${this.$route.path}/${this.id}/contact`;
+      if (this.selectedCoach) {
+        return `${this.$route.path}/${this.id}/contact`;
+      }
     },
     rate() {
-      return this.selectedCoach.hourlyRate;
+      if (this.selectedCoach) {
+        return this.selectedCoach.hourlyRate;
+      }
     },
     description() {
-      return this.selectedCoach.description;
+      if (this.selectedCoach) {
+        return this.selectedCoach.description;
+      }
     },
     areas() {
-      return this.selectedCoach.areas;
+      if (this.selectedCoach) {
+        return this.selectedCoach.areas;
+      }
     },
   },
 };
