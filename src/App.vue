@@ -36,16 +36,18 @@ body {
 .route-enter-from,
 .route-leave-to {
   opacity: 0;
+  transform: translateY(-60px);
 }
 
 .route-enter-active,
 .route-leave-active {
-  transition: opacity 0.1s linear;
+  transition: all 0.1s linear;
 }
 
 .route-enter-to,
 .route-leave-from {
   opacity: 1;
+  transform: translateY(0);
 }
 </style>
 
