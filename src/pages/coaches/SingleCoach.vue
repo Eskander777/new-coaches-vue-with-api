@@ -1,5 +1,12 @@
 <template>
   <div>
+    <base-dialog
+      :show="isErrorFetching"
+      title="An error occured!"
+      @close="closeDialog"
+    >
+      <p>{{ errorMsg }}</p>
+    </base-dialog>
     <section>
       <base-card>
         <h2>{{ fullName }}</h2>
@@ -50,6 +57,11 @@ export default {
         });
     }
   },
+  methods: {
+    closeDialog() {
+      this.$router.push('/coaches');
+    },
+  },
   computed: {
     fullName() {
       if (this.selectedCoach) {
@@ -75,6 +87,12 @@ export default {
       if (this.selectedCoach) {
         return this.selectedCoach.areas;
       }
+    },
+    isErrorFetching() {
+      return !!this.$store.getters['coaches/isErrorFetching'];
+    },
+    errorMsg() {
+      return this.$store.getters['coaches/isErrorFetching'];
     },
   },
 };
