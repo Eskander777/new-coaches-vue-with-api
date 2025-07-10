@@ -12,7 +12,6 @@ export const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', redirect: '/coaches' },
-    { path: '/signup', component: Signup },
     { path: '/coaches', component: Coaches },
     {
       props: true,
@@ -22,6 +21,7 @@ export const router = createRouter({
     },
     { path: '/register', component: RegisterCoach },
     { path: '/requests', component: Requests },
+    { path: '/auth', component: Signup },
     { path: '/:notFound(.*)', component: Error },
   ],
 });

@@ -1,30 +1,110 @@
 <template>
   <div>
     <base-card>
-      <h2>Signup Page</h2>
-    </base-card>
-    <base-card>
-      <form>
+      <form @submit.prevent="submitForm">
         <div class="form-control">
           <label for="email">Email</label
-          ><input type="email" name="email" id="email" />
+          ><input
+            type="email"
+            name="email"
+            id="email"
+            v-model.trim="email.value"
+          />
+          <p v-if="email.error" class="error-message">
+            Please, enter a valid email
+          </p>
         </div>
         <div class="form-control">
           <label for="password">Password</label
-          ><input type="password" name="password" id="password" />
+          ><input
+            type="password"
+            name="password"
+            id="password"
+            v-model.trim="password.value"
+          />
+          <p v-if="password.error" class="error-message">
+            Please, enter a valid password
+          </p>
         </div>
-        <base-button>Login</base-button>
-        <base-button type="button" mode="flat">Signup instead</base-button>
+        <base-button :disabled="!formIsValid">{{
+          submitButtonCaption
+        }}</base-button>
+        <base-button type="button" mode="flat" @click="switchAuthForm"
+          >{{ switchModeButtonCaption }} instead</base-button
+        >
       </form>
     </base-card>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      email: { value: '', error: false },
+      password: { value: '', error: false },
+      formIsValid: false,
+      mode: 'login',
+    };
+  },
+  computed: {
+    submitButtonCaption() {
+      return this.mode.charAt(0).toUpperCase() + this.mode.substring(1);
+    },
+    switchModeButtonCaption() {
+      if (this.mode === 'login') {
+        return 'Signup';
+      }
+      return 'Login';
+    },
+  },
+  watch: {
+    'email.value'(newEmail) {
+      if (newEmail.includes('@')) {
+        this.email.error = false;
+        if (
+          this.email.error === false &&
+          this.password.error === false &&
+          this.password.value !== ''
+        ) {
+          this.formIsValid = true;
+        }
+      } else {
+        this.email.error = true;
+        this.formIsValid = false;
+      }
+    },
+    'password.value'(newPassword) {
+      if (newPassword.length > 6) {
+        this.password.error = false;
+        if (
+          this.password.error === false &&
+          this.email.error === false &&
+          this.email.value !== ''
+        ) {
+          this.formIsValid = true;
+        }
+      } else {
+        this.password.error = true;
+        this.formIsValid = false;
+      }
+    },
+  },
+  methods: {
+    submitForm(e) {
+      console.log(this.email);
+      console.log(this.password);
+    },
+    switchAuthForm() {
+      this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');
+    },
+  },
+};
+</script>
+
 <style scoped>
 form {
   margin: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
   padding: 1rem;
 }
 
@@ -53,6 +133,9 @@ textarea:focus {
   border-color: #3d008d;
   background-color: #faf6ff;
   outline: none;
+}
+.error-message {
+  color: red;
 }
 </style>
 

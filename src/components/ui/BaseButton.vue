@@ -40,6 +40,11 @@ a {
   display: inline-block;
 }
 
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 a:hover,
 a:active,
 button:hover,

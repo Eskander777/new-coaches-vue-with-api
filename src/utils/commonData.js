@@ -8,7 +8,7 @@ export function coachApi(userId) {
 }
 
 export function coachesApi() {
-  return API_HOST + '/coaches.jso';
+  return API_HOST + '/coaches.json';
 }
 
 export function requestApi(coachId) {

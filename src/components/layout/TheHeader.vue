@@ -8,7 +8,7 @@
         <li><router-link to="/coaches">All Coaches</router-link></li>
         <li><router-link to="/requests">Requests</router-link></li>
         <li>
-          <router-link to="/signup">Signup</router-link>
+          <router-link to="/auth">Signup</router-link>
         </li>
       </ul>
     </nav>
