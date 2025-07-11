@@ -1,5 +1,17 @@
 <template>
   <div>
+    <base-dialog
+      :show="!!submitError"
+      title="An error occured!"
+      @close="dismissError"
+    >
+      <p>
+        {{ submitError }}
+      </p>
+    </base-dialog>
+    <base-dialog :show="isSubmitting" title="Authenticating..." fixed>
+      <base-spinner></base-spinner>
+    </base-dialog>
     <base-card>
       <form @submit.prevent="submitForm">
         <div class="form-control">
@@ -45,6 +57,8 @@ export default {
       password: { value: '', error: false },
       formIsValid: false,
       mode: 'login',
+      isSubmitting: false,
+      submitError: null,
     };
   },
   computed: {
@@ -91,12 +105,30 @@ export default {
     },
   },
   methods: {
-    submitForm(e) {
-      console.log(this.email);
-      console.log(this.password);
+    submitForm() {
+      this.isSubmitting = true;
+
+      if (this.mode === 'login') {
+        return;
+      }
+
+      this.$store
+        .dispatch('signup', {
+          email: this.email.value,
+          password: this.password.value,
+        })
+        .catch((error) => {
+          this.submitError = error;
+        })
+        .finally(() => {
+          this.isSubmitting = false;
+        });
     },
     switchAuthForm() {
       this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');
+    },
+    dismissError() {
+      this.submitError = null;
     },
   },
 };
