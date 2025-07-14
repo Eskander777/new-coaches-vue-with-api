@@ -108,21 +108,22 @@ export default {
     submitForm() {
       this.isSubmitting = true;
 
+      const actionPayload = {
+        email: this.email.value,
+        password: this.password.value,
+      };
+
       if (this.mode === 'login') {
-        return;
+        return this.$store
+          .dispatch('login', actionPayload)
+          .catch((error) => (this.submitError = error))
+          .finally(() => (this.isSubmitting = false));
       }
 
       this.$store
-        .dispatch('signup', {
-          email: this.email.value,
-          password: this.password.value,
-        })
-        .catch((error) => {
-          this.submitError = error;
-        })
-        .finally(() => {
-          this.isSubmitting = false;
-        });
+        .dispatch('signup', actionPayload)
+        .catch((error) => (this.submitError = error))
+        .finally(() => (this.isSubmitting = false));
     },
     switchAuthForm() {
       this.mode === 'login' ? (this.mode = 'signup') : (this.mode = 'login');

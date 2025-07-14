@@ -30,9 +30,9 @@ export const actions = {
   },
 
   getRequests(context) {
-    const coachId = context.rootState.userId;
-
-    return fetch(requestsApi(coachId), {
+    const coachId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
+    return fetch(requestsApi(coachId) + '?auth=' + token, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })

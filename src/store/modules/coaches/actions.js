@@ -7,6 +7,7 @@ export const actions = {
   },
   addCoach(context, data) {
     const userId = context.rootGetters.userId;
+    const token = context.rootGetters.token;
     const newCoach = {
       firstName: data.first,
       lastName: data.last,
@@ -14,8 +15,7 @@ export const actions = {
       hourlyRate: data.rate,
       areas: data.areas,
     };
-
-    fetch(coachApi(userId), {
+    fetch(coachApi(userId) + '?auth=' + token, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newCoach),

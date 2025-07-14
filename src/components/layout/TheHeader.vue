@@ -6,9 +6,14 @@
       </h1>
       <ul>
         <li><router-link to="/coaches">All Coaches</router-link></li>
-        <li><router-link to="/requests">Requests</router-link></li>
-        <li>
-          <router-link to="/auth">Signup</router-link>
+        <li v-if="isAuth === true">
+          <router-link to="/requests">Requests</router-link>
+        </li>
+        <li v-else-if="isAuth === false">
+          <router-link to="/auth">Login</router-link>
+        </li>
+        <li v-if="isAuth === true">
+          <base-button @click="logout">Logout</base-button>
         </li>
       </ul>
     </nav>
@@ -16,7 +21,16 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters(['isAuth']),
+  },
+  methods: {
+    ...mapActions(['logout']),
+  },
+};
 </script>
 
 <style scoped>

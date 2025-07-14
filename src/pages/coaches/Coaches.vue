@@ -16,8 +16,11 @@
             @click="loadCoaches({ customRefresh: true })"
             >Refresh</base-button
           >
+          <base-button v-if="isAuth === false" link to="/auth"
+            >Login</base-button
+          >
           <base-button
-            v-if="!isCoach && isFetching === false"
+            v-if="!isCoach && isFetching === false && isAuth === true"
             link
             to="/register"
             >Register a Coach</base-button
@@ -68,6 +71,9 @@ export default {
     },
     errorMsg() {
       return this.$store.getters['coaches/isErrorFetching'];
+    },
+    isAuth() {
+      return this.$store.getters.isAuth;
     },
   },
   methods: {
