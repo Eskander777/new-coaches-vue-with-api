@@ -45,8 +45,11 @@ export const actions = {
       });
   },
   logout(context) {
-    console.log('Logout action');
-    context.commit('removeUser');
+    context.commit('setUser', {
+      token: null,
+      userId: null,
+      tokenExpiration: null,
+    });
   },
 };
 

@@ -114,14 +114,24 @@ export default {
       };
 
       if (this.mode === 'login') {
-        return this.$store
-          .dispatch('login', actionPayload)
+        return Promise.race([
+          this.$store.dispatch('login', actionPayload),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timed out')), 3000)
+          ),
+        ])
+          .then(() => this.$router.push('/coaches'))
           .catch((error) => (this.submitError = error))
           .finally(() => (this.isSubmitting = false));
       }
 
-      this.$store
-        .dispatch('signup', actionPayload)
+      Promise.race([
+        this.$store.dispatch('signup', actionPayload),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Request timed out')), 3000)
+        ),
+      ])
+        .then(() => this.$router.push('/coaches'))
         .catch((error) => (this.submitError = error))
         .finally(() => (this.isSubmitting = false));
     },

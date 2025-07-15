@@ -13,7 +13,7 @@
           <router-link to="/auth">Login</router-link>
         </li>
         <li v-if="isAuth === true">
-          <base-button @click="logout">Logout</base-button>
+          <base-button @click="logoutMethod">Logout</base-button>
         </li>
       </ul>
     </nav>
@@ -29,6 +29,10 @@ export default {
   },
   methods: {
     ...mapActions(['logout']),
+    logoutMethod() {
+      this.logout();
+      this.$router.push('/coaches');
+    },
   },
 };
 </script>
