@@ -113,6 +113,7 @@ export default {
         password: this.password.value,
       };
 
+      const redirectUrl = '/' + (this.$route.query.redirect || 'coaches');
       if (this.mode === 'login') {
         return Promise.race([
           this.$store.dispatch('login', actionPayload),
@@ -120,18 +121,17 @@ export default {
             setTimeout(() => reject(new Error('Request timed out')), 3000)
           ),
         ])
-          .then(() => this.$router.push('/coaches'))
+          .then(() => this.$router.push(redirectUrl))
           .catch((error) => (this.submitError = error))
           .finally(() => (this.isSubmitting = false));
       }
-
       Promise.race([
         this.$store.dispatch('signup', actionPayload),
         new Promise((_, reject) =>
           setTimeout(() => reject(new Error('Request timed out')), 3000)
         ),
       ])
-        .then(() => this.$router.push('/coaches'))
+        .then(() => this.$router.push(redirectUrl))
         .catch((error) => (this.submitError = error))
         .finally(() => (this.isSubmitting = false));
     },

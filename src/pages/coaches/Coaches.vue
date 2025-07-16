@@ -16,8 +16,8 @@
             @click="loadCoaches({ customRefresh: true })"
             >Refresh</base-button
           >
-          <base-button v-if="isAuth === false" link to="/auth"
-            >Login</base-button
+          <base-button v-if="isAuth === false" link to="/auth?redirect=register"
+            >Login into register as coach</base-button
           >
           <base-button
             v-if="!isCoach && isFetching === false && isAuth === true"
