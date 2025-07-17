@@ -21,10 +21,8 @@ export const actions = {
       body: JSON.stringify(newCoach),
     }).then((response) => {
       if (!response.ok) {
-        const error = new Error(response.message || '');
-        throw error;
+        throw new Error(response.message || '');
       }
-
       context.commit('addCoach', {
         ...newCoach,
         id: userId,
@@ -47,14 +45,11 @@ export const actions = {
       method: 'GET',
       headers: { 'Content-type': 'application/json' },
     })
-      .then((resp) => {
-        if (!resp.ok) {
-          const error = new Error(response.message || '');
-          throw error;
-        }
-        return resp.json();
-      })
+      .then((resp) => resp.json())
       .then((coachesData) => {
+        if (coachesData.error) {
+          throw new Error(coachesData.error || '');
+        }
         if (!coachesData || Object.keys(coachesData).length === 0) {
           return;
         }

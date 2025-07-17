@@ -11,17 +11,11 @@ export const actions = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newRequest),
     })
-      .then((response) => {
-        if (response.ok === false) {
-          const error = new Error(
-            response.message || 'Failed to send request.'
-          );
-          throw error;
-        }
-
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((responseData) => {
+        if (responseData.error) {
+          throw new Error(responseData.error || 'Failed to send request.');
+        }
         newRequest.id = responseData.name;
         newRequest.coachId = coachId;
         context.commit('addRequest', newRequest);
@@ -36,14 +30,11 @@ export const actions = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
-      .then((response) => {
-        if (response.ok === false) {
-          throw new Error(response.message || 'Error fetching requests.');
-        }
-
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((responseData) => {
+        if (responseData.error) {
+          throw new Error(responseData.error || 'Error fetching requests.');
+        }
         const requestsArr = [];
         for (let reqId in responseData) {
           const fetchedRequest = {

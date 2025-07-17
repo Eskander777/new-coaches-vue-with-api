@@ -1,4 +1,5 @@
 import { signupApi, signinApi } from '@/utils/commonData';
+let timerId;
 
 export const actions = {
   login(context, payload) {
@@ -22,17 +23,33 @@ export const actions = {
           throw new Error(responseData.error.message || `${methodName} error`);
         }
 
+        const tokenExpirationInMs = Number(responseData.expiresIn) * 1000;
+        const tokenExpiration = new Date().getTime() + tokenExpirationInMs;
+
         localStorage.setItem('token', responseData.idToken);
         localStorage.setItem('userId', responseData.localId);
+        localStorage.setItem('tokenExpiration', tokenExpiration);
+
+        timerId = setTimeout(function () {
+          context.dispatch('autoLogout');
+        }, tokenExpirationInMs);
 
         context.commit('setUser', {
           token: responseData.idToken,
           userId: responseData.localId,
-          tokenExpiration: responseData.expiresIn,
         });
       });
   },
   autoLogin(context) {
+    const tokenExpiration = localStorage.getItem('tokenExpiration');
+    const expiresIn = Number(tokenExpiration) - new Date().getTime();
+
+    if (expiresIn < 0) return;
+
+    timerId = setTimeout(function () {
+      context.dispatch('autoLogout');
+    }, expiresIn);
+
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
@@ -45,11 +62,20 @@ export const actions = {
   },
 
   logout(context) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('tokenExpiration');
+
+    clearTimeout(timerId);
+
     context.commit('setUser', {
       token: null,
       userId: null,
-      tokenExpiration: null,
     });
+  },
+  autoLogout(context) {
+    context.dispatch('logout');
+    context.commit('setAutoLogout');
   },
 };
 

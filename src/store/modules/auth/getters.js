@@ -8,5 +8,8 @@ export const getters = {
   isAuth(state) {
     return !!state.token;
   },
+  didAutoLogout(state) {
+    return state.didAutoLogout;
+  },
 };
 

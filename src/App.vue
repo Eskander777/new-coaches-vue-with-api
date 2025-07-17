@@ -18,6 +18,20 @@ export default {
   created() {
     this.$store.dispatch('autoLogin');
   },
+  // 'computed' properties should always return value with
+  // 'return' keyword
+  computed: {
+    isAutoLoggedOut() {
+      return this.$store.getters.didAutoLogout;
+    },
+  },
+  watch: {
+    isAutoLoggedOut(curValue, oldValue) {
+      if (curValue && curValue !== oldValue) {
+        this.$router.replace('/coaches');
+      }
+    },
+  },
 };
 </script>
 
