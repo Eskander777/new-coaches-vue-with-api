@@ -32,7 +32,7 @@ export const actions = {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        if (responseData.error) {
+        if (responseData && responseData.error) {
           throw new Error(responseData.error || 'Error fetching requests.');
         }
         const requestsArr = [];

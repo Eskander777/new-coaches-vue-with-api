@@ -1,3 +1,4 @@
+import { defineAsyncComponent } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 // We may use vuex store outside of components inside of
@@ -8,12 +9,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 // user is authenticated or not.
 import { store } from '@/store';
 import Coaches from '@/pages/coaches/Coaches.vue';
-import SingleCoach from '@/pages/coaches/SingleCoach.vue';
-import RegisterCoach from '@/pages/coaches/RegisterCoach.vue';
-import ContactCoach from '@/pages/requests/ContactCoach.vue';
-import Requests from '@/pages/requests/Requests.vue';
 import Error from '@/pages/Error.vue';
-import UserAuth from '@/pages/UserAuth.vue';
+
+const SingleCoach = () => import('@/pages/coaches/SingleCoach.vue');
+const RegisterCoach = () => import('@/pages/coaches/RegisterCoach.vue');
+const ContactCoach = () => import('@/pages/requests/ContactCoach.vue');
+const Requests = () => import('@/pages/requests/Requests.vue');
+const UserAuth = () => import('@/pages/UserAuth.vue');
 
 export const router = createRouter({
   history: createWebHistory(),
